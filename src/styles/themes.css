@@ -1,0 +1,110 @@
+/* Thèmes IT et OT */
+
+/* Thème IT (Informatique) */
+.theme-it {
+    --color-network: #007BFF;
+    --color-network-light: #4DA3FF;
+    --color-network-dark: #0056B3;
+    --color-network-bg: rgba(0, 123, 255, 0.1);
+  }
+  
+  /* Thème OT (Opérationnel) */
+  .theme-ot {
+    --color-network: #FF9800;
+    --color-network-light: #FFB547;
+    --color-network-dark: #C77700;
+    --color-network-bg: rgba(255, 152, 0, 0.1);
+  }
+  
+  /* Variables de couleur IT */
+  .it-primary {
+    color: #007BFF;
+    background-color: rgba(0, 123, 255, 0.1);
+  }
+  
+  .it-border {
+    border-color: #007BFF;
+  }
+  
+  .it-button {
+    background-color: #007BFF;
+    color: white;
+  }
+  
+  .it-button:hover {
+    background-color: #0056B3;
+  }
+  
+  /* Variables de couleur OT */
+  .ot-primary {
+    color: #FF9800;
+    background-color: rgba(255, 152, 0, 0.1);
+  }
+  
+  .ot-border {
+    border-color: #FF9800;
+  }
+  
+  .ot-button {
+    background-color: #FF9800;
+    color: white;
+  }
+  
+  .ot-button:hover {
+    background-color: #C77700;
+  }
+  
+  /* Badges réseau */
+  .network-badge-it {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #007BFF;
+    color: white;
+  }
+  
+  .network-badge-ot {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #FF9800;
+    color: white;
+  }
+  
+  /* Cards avec accent IT/OT */
+  .card-it {
+    border-left: 4px solid #007BFF;
+  }
+  
+  .card-ot {
+    border-left: 4px solid #FF9800;
+  }
+  
+  /* Status colors */
+  .status-online {
+    color: #28a745;
+    background-color: rgba(40, 167, 69, 0.1);
+  }
+  
+  .status-offline {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
+  }
+  
+  .status-warning {
+    color: #ffc107;
+    background-color: rgba(255, 193, 7, 0.1);
+  }
+  
+  .status-maintenance {
+    color: #6c757d;
+    background-color: rgba(108, 117, 125, 0.1);
+  }
