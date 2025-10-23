@@ -1,7 +1,7 @@
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@store/authStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { authAPI } from '@/services/api/auth';
-import { LoginCredentials } from '@/models/auth';
+import { authAPI } from '@services/api/auth';
+import { LoginCredentials } from '@models/auth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 export const useAuth = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { user, setUser, logout: storeLogout } = useAuthStore();
+  const { user, token, setUser, logout: storeLogout } = useAuthStore();
 
   // Login mutation
   const loginMutation = useMutation({
@@ -17,11 +17,12 @@ export const useAuth = () => {
     onSuccess: (data) => {
       setUser(data.user);
       localStorage.setItem('authToken', data.token);
+      localStorage.setItem('refreshToken', data.refreshToken);
       toast.success('Connexion réussie');
       navigate('/');
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Erreur de connexion');
+      toast.error(error.message || 'Erreur de connexion');
     },
   });
 
@@ -31,6 +32,7 @@ export const useAuth = () => {
     onSuccess: () => {
       storeLogout();
       localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
       queryClient.clear();
       toast.success('Déconnexion réussie');
       navigate('/login');
@@ -39,6 +41,7 @@ export const useAuth = () => {
       // Force logout même en cas d'erreur
       storeLogout();
       localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
       queryClient.clear();
       navigate('/login');
     },
@@ -48,7 +51,7 @@ export const useAuth = () => {
   const { data: currentUser, isLoading, error } = useQuery({
     queryKey: ['currentUser'],
     queryFn: () => authAPI.getCurrentUser(),
-    enabled: !!localStorage.getItem('authToken'),
+    enabled: !!token,
     retry: false,
   });
 
@@ -63,6 +66,7 @@ export const useAuth = () => {
     if (error) {
       storeLogout();
       localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
     }
   }, [error, storeLogout]);
 
@@ -71,11 +75,10 @@ export const useAuth = () => {
   };
 
   const logout = () => {
-    storeLogout();
     logoutMutation.mutate();
   };
 
-  const isAuthenticated = !!user;
+  const isAuthenticated = !!user && !!token;
 
   return {
     user,

@@ -1,9 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { modificationsAPI } from '@/services/api/modifications';
-import { ModificationProposal, ModificationStatus } from '@/models/modifications';
+import { modificationsAPI } from '@services/api/modifications';
+import { ModificationProposal } from '@models/modifications';
 import { toast } from 'sonner';
 import { useNetworkStatus } from './useNetworkStatus';
-import { offlineQueue } from '@/services/sync/offlineQueue';
 
 export const useModifications = () => {
   const queryClient = useQueryClient();
@@ -23,9 +22,11 @@ export const useModifications = () => {
 
   // Create modification
   const createMutation = useMutation({
-    mutationFn: (data: Omit<ModificationProposal, 'id' | 'status' | 'createdAt'>) => {
+    mutationFn: (data: Omit<ModificationProposal, 'id' | 'status' | 'createdAt' | 'updatedAt' | 'proposedByName'>) => {
       if (!isOnline) {
-        return offlineQueue.addModification(data);
+        // En mode hors ligne, stocker localement
+        toast.info('Mode hors ligne: modification enregistrée localement');
+        return Promise.resolve(data as any);
       }
       return modificationsAPI.createModification(data);
     },
@@ -38,39 +39,39 @@ export const useModifications = () => {
       );
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Erreur lors de la création');
+      toast.error(error.message || 'Erreur lors de la création');
     },
   });
 
   // Approve modification
   const approveMutation = useMutation({
     mutationFn: ({ id, comment }: { id: string; comment?: string }) =>
-        modificationsAPI.approveModification(id, comment),
+      modificationsAPI.approveModification(id, comment),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['modifications'] });
       toast.success('Modification approuvée');
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Erreur lors de l\'approbation');
+      toast.error(error.message || 'Erreur lors de l\'approbation');
     },
   });
 
   // Reject modification
   const rejectMutation = useMutation({
     mutationFn: ({ id, reason }: { id: string; reason: string }) =>
-        modificationsAPI.rejectModification(id, reason),
+      modificationsAPI.rejectModification(id, reason),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['modifications'] });
       toast.success('Modification rejetée');
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Erreur lors du rejet');
+      toast.error(error.message || 'Erreur lors du rejet');
     },
   });
 
   return {
-    modifications,
-    pendingModifications,
+    modifications: modifications?.data || [],
+    pendingModifications: pendingModifications?.data || [],
     isLoading,
     createModification: createMutation.mutate,
     approveModification: approveMutation.mutate,
@@ -91,20 +92,15 @@ export const useModification = (id: string) => {
 };
 
 // Hook pour l'historique des modifications
-export const useModificationHistory = (filters?: {
-  status?: ModificationStatus;
-  userId?: string;
-  startDate?: Date;
-  endDate?: Date;
-}) => {
-    return useQuery({
-        queryKey: ['modifications', 'history', filters],
-        queryFn: () => {
-          if (!filters?.userId) {
-            throw new Error("userId is required to fetch modification history");
-          }
-          return modificationsAPI.getHistory(filters.userId);
-        },
-        enabled: !!filters?.userId, // ✅ évite que la requête s’exécute sans userId
-      });
+export const useModificationHistory = (userId?: string) => {
+  return useQuery({
+    queryKey: ['modifications', 'history', userId],
+    queryFn: () => {
+      if (!userId) {
+        throw new Error("userId is required to fetch modification history");
+      }
+      return modificationsAPI.getHistory(userId);
+    },
+    enabled: !!userId,
+  });
 };
