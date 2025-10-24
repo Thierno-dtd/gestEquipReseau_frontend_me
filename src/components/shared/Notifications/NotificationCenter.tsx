@@ -1,32 +1,25 @@
-// src/components/shared/Notifications/NotificationCenter.tsx
-import React, { useEffect } from 'react';
-import { useNotificationStore } from '@store/notificationStore';
-import { NotificationCard } from './NotificationCard';
+import { useNotificationStore } from '@/store/notificationStore'
+import NotificationCard from './NotificationCard'
+import ValidationQueue from './ValidationQueue'
+import SyncStatus from './SyncStatus'
 
-export const NotificationCenter: React.FC = () => {
-  const { notifications, fetchNotifications, markAsRead } = useNotificationStore();
-
-  useEffect(() => {
-    fetchNotifications();
-  }, [fetchNotifications]);
-
-  if (notifications.length === 0) {
-    return (
-      <div className="p-6 text-center text-gray-500">
-        Aucune notification à afficher.
-      </div>
-    );
-  }
+export default function NotificationCenter() {
+  const { notifications } = useNotificationStore()
 
   return (
-    <div className="max-h-[400px] overflow-y-auto p-4">
-      {notifications.map((notif) => (
-        <NotificationCard
-          key={notif.id}
-          notification={notif}
-          onClick={() => markAsRead(notif.id)}
-        />
-      ))}
-    </div>
-  );
-};
+    <aside className="w-full max-w-md p-4 space-y-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+      <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Centre de Notifications</h2>
+      <SyncStatus />
+      <ValidationQueue />
+      <div className="space-y-2">
+        {notifications.length === 0 ? (
+          <p className="text-gray-500 dark:text-gray-400">Aucune notification pour le moment.</p>
+        ) : (
+          notifications.map((notif) => (
+            <NotificationCard key={notif.id} notification={notif} />
+          ))
+        )}
+      </div>
+    </aside>
+  )
+}
