@@ -3,10 +3,12 @@ import {
   BaseEdge, 
   EdgeProps, 
   getSmoothStepPath,
-  EdgeLabelRenderer 
+  EdgeLabelRenderer,
+  Edge
 } from '@xyflow/react';
 
-interface ConnectionEdgeData {
+// ✅ Interface qui étend Edge correctement
+export interface ConnectionEdgeData extends Edge {
   sourcePort?: {
     id: string;
     number: number;
@@ -38,6 +40,7 @@ const ConnectionEdge = memo(({
     targetPosition,
   });
 
+  // ✅ Vérifier que data existe avant d'accéder aux propriétés
   const isActive = data?.sourcePort?.status === 'UP';
   const portType = data?.sourcePort?.type || 'ETHERNET';
 

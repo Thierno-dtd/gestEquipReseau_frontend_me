@@ -15,9 +15,9 @@ import {
   EdgeTypes,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { RackDetail, Equipment, Connection as EquipmentConnection } from '@models/infrastructure';
-import EquipmentNode from './EquipmentNode';
-import ConnectionEdge from './ConnectionEdge';
+import { RackDetail, Equipment, Port, Connection as EquipmentConnection } from '@models/infrastructure';
+import EquipmentNode, { EquipmentWithPorts } from './EquipmentNode';
+import ConnectionEdge, { ConnectionEdgeData } from './ConnectionEdge';
 import ITOTLegend from './ITOTLegend';
 import PortDetailPanel from './PortDetailPanel';
 import { NETWORK_COLORS } from '@utils/colors';
@@ -51,12 +51,18 @@ const RackDiagram = ({
       const yPosition = (rack.height - equipment.position) * 50;
       const xPosition = 100 + (index % 3) * 300;
 
+      // ✅ Créer un équipement avec ports
+      const equipmentWithPorts: EquipmentWithPorts = {
+        ...equipment,
+        ports: equipment.ports || [], // S'assurer que ports existe
+      };
+
       return {
         id: equipment.id,
         type: 'equipment',
         position: { x: xPosition, y: yPosition },
         data: {
-          equipment,
+          equipment: equipmentWithPorts,
           onPortClick: (portId: string) => setSelectedPort(portId),
         },
         draggable: editable,
@@ -65,8 +71,8 @@ const RackDiagram = ({
   }, [rack, editable]);
 
   // Générer les edges depuis les connexions
-  const generateEdges = useCallback((): Edge[] => {
-    const edges: Edge[] = [];
+  const generateEdges = useCallback((): Edge<ConnectionEdgeData>[] => {
+    const edges: Edge<ConnectionEdgeData>[] = [];
     
     rack.equipments.forEach(equipment => {
       equipment.ports?.forEach(port => {
@@ -82,7 +88,16 @@ const RackDiagram = ({
               target: targetEquipment.id,
               type: 'connection',
               data: {
-                sourcePort: port,
+                id: `${port.id}-${port.connectedTo}`,
+                source: equipment.id,
+                target: targetEquipment.id,
+                sourcePort: {
+                  id: port.id,
+                  number: port.number,
+                  status: port.status,
+                  type: port.type,
+                  vlan: port.vlan,
+                },
                 label: port.vlan || '',
               },
               animated: port.status === 'UP',
@@ -103,8 +118,10 @@ const RackDiagram = ({
     (params: Connection) => {
       if (!editable) return;
 
-      const newEdge = {
-        ...params,
+      const newEdge: Edge = {
+        id: `${params.source}-${params.target}`,
+        source: params.source!,
+        target: params.target!,
         type: 'connection',
       };
 
