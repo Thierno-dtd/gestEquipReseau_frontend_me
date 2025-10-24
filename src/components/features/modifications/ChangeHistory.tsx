@@ -1,27 +1,24 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { modificationsAPI } from '@services/api/modifications';
-import { useAuthStore } from '@store/authStore';
-import { Search, Filter, Calendar, User, FileText } from 'lucide-react';
+import { Search, Filter, Calendar, User, FileText, ChevronDown } from 'lucide-react';
 import Loading from '@components/shared/Common/Loading';
 import Badge from '@components/shared/Common/Badge';
 import { ModificationStatus } from '@models/modifications';
 import { formatDateTime, formatRelativeTime } from '@utils/formatters';
 
 const ChangeHistory = () => {
-  const { user } = useAuthStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<ModificationStatus | 'ALL'>('ALL');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // Récupérer l'historique
-  const { data: history, isLoading } = useQuery({
-    queryKey: ['modifications', 'history', user?.id],
-    queryFn: () => modificationsAPI.getHistory(user?.id || ''),
-    enabled: !!user?.id,
+  // Récupérer l'historique complet
+  const { data: modificationsData, isLoading } = useQuery({
+    queryKey: ['modifications', 'history'],
+    queryFn: () => modificationsAPI.getModifications(),
   });
 
-  const modifications = history || [];
+  const modifications = modificationsData?.data || [];
 
   // Filtrer
   const filteredModifications = modifications.filter(mod => {
@@ -104,7 +101,7 @@ const ChangeHistory = () => {
           {/* Grouper par date */}
           {Object.entries(
             filteredModifications.reduce((groups, mod) => {
-              const date = new Date(mod.createdAt).toLocaleDateString('fr-FR', {
+              const date = new Date(mod.proposedAt).toLocaleDateString('fr-FR', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
@@ -132,7 +129,6 @@ const ChangeHistory = () => {
 
                 {mods.map((modification, index) => {
                   const isExpanded = expandedId === modification.id;
-                  const isLast = index === mods.length - 1;
 
                   return (
                     <div key={modification.id} className="relative">
@@ -170,9 +166,12 @@ const ChangeHistory = () => {
                               ID: {modification.id}
                             </p>
                           </div>
-                          <span className="text-xs text-gray-500 dark:text-gray-500">
-                            {formatRelativeTime(modification.createdAt)}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-gray-500 dark:text-gray-500">
+                              {formatRelativeTime(modification.proposedAt)}
+                            </span>
+                            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                          </div>
                         </div>
 
                         {/* Info */}
@@ -240,6 +239,28 @@ const ChangeHistory = () => {
                                 </p>
                               </div>
                             )}
+
+                            {/* Data changes */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              {modification.oldData && (
+                                <div className="bg-red-50 dark:bg-red-900/10 rounded-lg p-3 border border-red-200 dark:border-red-800">
+                                  <h5 className="text-xs font-semibold text-red-900 dark:text-red-400 mb-2">
+                                    Anciennes valeurs
+                                  </h5>
+                                  <pre className="text-xs text-red-800 dark:text-red-300 overflow-auto">
+                                    {JSON.stringify(modification.oldData, null, 2)}
+                                  </pre>
+                                </div>
+                              )}
+                              <div className="bg-green-50 dark:bg-green-900/10 rounded-lg p-3 border border-green-200 dark:border-green-800">
+                                <h5 className="text-xs font-semibold text-green-900 dark:text-green-400 mb-2">
+                                  Nouvelles valeurs
+                                </h5>
+                                <pre className="text-xs text-green-800 dark:text-green-300 overflow-auto">
+                                  {JSON.stringify(modification.newData, null, 2)}
+                                </pre>
+                              </div>
+                            </div>
                           </div>
                         )}
                       </div>
