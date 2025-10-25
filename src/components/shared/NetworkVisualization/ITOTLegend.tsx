@@ -20,29 +20,6 @@ const ITOTLegend = () => {
             style={{ backgroundColor: NETWORK_COLORS.IT.primary }}
           />
           <span className="text-sm text-gray-700 dark:text-gray-300">
-            Fibre optique
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-0.5 bg-blue-400" />
-          <span className="text-sm text-gray-700 dark:text-gray-300">
-            SFP/QSFP
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-0.5 bg-gray-400 border-dashed border-t-2 border-gray-400" />
-          <span className="text-sm text-gray-700 dark:text-gray-300">
-            Inactif
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ITOTLegend;-300">
             IT (Informatique)
           </span>
         </div>
@@ -144,4 +121,27 @@ export default ITOTLegend;-300">
 
         <div className="flex items-center gap-2">
           <div className="w-8 h-0.5 bg-yellow-300" />
-          <span className="text-sm text-gray-700 dark:text-gray
+          <span className="text-sm text-gray-700 dark:text-gray-300">
+            Fibre optique
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-0.5 bg-blue-400" />
+          <span className="text-sm text-gray-700 dark:text-gray-300">
+            SFP/QSFP
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-0.5 bg-gray-400 border-dashed border-t-2 border-gray-400" />
+          <span className="text-sm text-gray-700 dark:text-gray-300">
+            Inactif
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ITOTLegend;

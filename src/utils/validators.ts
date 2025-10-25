@@ -61,6 +61,11 @@ export const rackSchema = z.object({
 
 export type RackFormData = z.infer<typeof rackSchema>;
 
+const ipv4Regex =/^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/;
+
+const ipv6Regex = /^(([0-9a-fA-F]{1,4}:){7}([0-9a-fA-F]{1,4}|:))|(([0-9a-fA-F]{1,4}:){1,7}:)|(([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4})$/;
+
+
 // Equipment
 export const equipmentSchema = z.object({
   name: z.string().min(1, 'Le nom est requis'),
@@ -70,11 +75,14 @@ export const equipmentSchema = z.object({
   model: z.string().optional(),
   serialNumber: z.string().optional(),
   networkType: z.enum(['IT', 'OT'], {
-    errorMap: () => ({ message: 'Type de réseau invalide' }),
+    message: 'Type de réseau invalide',
   }),
   position: z.number().min(1, 'La position est requise'),
   height: z.number().min(1, 'La hauteur est requise'),
-  ipAddress: z.string().ip({ version: 'v4' }).optional().or(z.literal('')),
+  ipAddress: z.string().refine(
+    (val) => ipv4Regex.test(val) || ipv6Regex.test(val) || val === '',
+    { message: 'Adresse IP invalide (IPv4 ou IPv6 attendue)' }
+  ).optional(),
   macAddress: z.string().optional(),
   powerConsumption: z.number().positive().optional(),
   description: z.string().optional(),
@@ -112,7 +120,7 @@ export const modificationProposalSchema = z.object({
   type: z.enum(['CREATE', 'UPDATE', 'DELETE', 'CONNECT', 'DISCONNECT']),
   entity: z.enum(['SITE', 'ZONE', 'RACK', 'EQUIPMENT', 'PORT', 'CONNECTION']),
   entityId: z.string().optional(),
-  newData: z.record(z.any()),
+  newData: z.record(z.string(), z.unknown()),
   justification: z
     .string()
     .min(10, 'La justification doit contenir au moins 10 caractères')
