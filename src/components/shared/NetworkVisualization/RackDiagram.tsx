@@ -15,8 +15,8 @@ import {
   EdgeTypes,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { RackDetail, Equipment, Port, Connection as EquipmentConnection } from '@models/infrastructure';
-import EquipmentNode, { EquipmentWithPorts } from './EquipmentNode';
+import { RackDetail, Equipment } from '@models/infrastructure';
+import EquipmentNode, { EquipmentNodeData } from './EquipmentNode';
 import ConnectionEdge, { ConnectionEdgeData } from './ConnectionEdge';
 import ITOTLegend from './ITOTLegend';
 import PortDetailPanel from './PortDetailPanel';
@@ -25,52 +25,52 @@ import { NETWORK_COLORS } from '@utils/colors';
 interface RackDiagramProps {
   rack: RackDetail;
   onNodeClick?: (equipment: Equipment) => void;
-  onConnectionCreate?: (connection: Partial<EquipmentConnection>) => void;
   editable?: boolean;
 }
 
+
+// ✅ Types correctement définis
 const nodeTypes: NodeTypes = {
   equipment: EquipmentNode,
 };
 
 const edgeTypes: EdgeTypes = {
-  connection: ConnectionEdge,
+  connection: ConnectionEdge,   
 };
 
 const RackDiagram = ({ 
   rack, 
   onNodeClick, 
-  onConnectionCreate,
   editable = false 
 }: RackDiagramProps) => {
   const [selectedPort, setSelectedPort] = useState<string | null>(null);
 
-  // Générer les nodes depuis les équipements
-  const generateNodes = useCallback((): Node[] => {
+  // ✅ Générer les nodes avec le bon type
+  const generateNodes = useCallback((): Node<EquipmentNodeData>[] => {
     return rack.equipments.map((equipment, index) => {
       const yPosition = (rack.height - equipment.position) * 50;
       const xPosition = 100 + (index % 3) * 300;
 
-      // ✅ Créer un équipement avec ports
-      const equipmentWithPorts: EquipmentWithPorts = {
-        ...equipment,
-        ports: equipment.ports || [], // S'assurer que ports existe
+      // ✅ Data conforme à EquipmentNodeData
+      const nodeData: EquipmentNodeData = {
+        equipment: {
+          ...equipment,
+          ports: equipment.ports || [],
+        },
+        onPortClick: (portId: string) => setSelectedPort(portId),
       };
 
       return {
         id: equipment.id,
         type: 'equipment',
         position: { x: xPosition, y: yPosition },
-        data: {
-          equipment: equipmentWithPorts,
-          onPortClick: (portId: string) => setSelectedPort(portId),
-        },
+        data: nodeData,
         draggable: editable,
       };
     });
   }, [rack, editable]);
 
-  // Générer les edges depuis les connexions
+  // ✅ Générer les edges avec le bon type
   const generateEdges = useCallback((): Edge<ConnectionEdgeData>[] => {
     const edges: Edge<ConnectionEdgeData>[] = [];
     
@@ -82,24 +82,24 @@ const RackDiagram = ({
           );
 
           if (targetEquipment) {
+            // ✅ Data conforme à ConnectionEdgeData
+            const edgeData: ConnectionEdgeData = {
+              sourcePort: {
+                id: port.id,
+                number: port.number,
+                status: port.status,
+                type: port.type,
+                vlan: port.vlan,
+              },
+              label: port.vlan || '',
+            };
+
             edges.push({
               id: `${port.id}-${port.connectedTo}`,
               source: equipment.id,
               target: targetEquipment.id,
               type: 'connection',
-              data: {
-                id: `${port.id}-${port.connectedTo}`,
-                source: equipment.id,
-                target: targetEquipment.id,
-                sourcePort: {
-                  id: port.id,
-                  number: port.number,
-                  status: port.status,
-                  type: port.type,
-                  vlan: port.vlan,
-                },
-                label: port.vlan || '',
-              },
+              data: edgeData,
               animated: port.status === 'UP',
             });
           }
@@ -118,6 +118,7 @@ const RackDiagram = ({
     (params: Connection) => {
       if (!editable) return;
 
+      // ✅ Edge basique sans data spécifique
       const newEdge: Edge = {
         id: `${params.source}-${params.target}`,
         source: params.source!,
@@ -126,15 +127,8 @@ const RackDiagram = ({
       };
 
       setEdges((eds) => addEdge(newEdge, eds));
-
-      if (onConnectionCreate) {
-        onConnectionCreate({
-          sourcePortId: params.source!,
-          targetPortId: params.target!,
-        });
-      }
     },
-    [editable, setEdges, onConnectionCreate]
+    [editable, setEdges]
   );
 
   // Gérer le clic sur un node

@@ -4,26 +4,19 @@ import { Equipment, Port } from '@models/infrastructure';
 import { Server, Wifi, WifiOff, AlertCircle } from 'lucide-react';
 import { getNetworkColor, getStatusColor } from '@utils/colors';
 
-// ✅ Étendre Equipment pour inclure les ports
-export interface EquipmentWithPorts extends Equipment {
-  ports?: Port[];
-}
-
-// ✅ Interface qui représente les données du node
-interface EquipmentNodeData extends Record<string, unknown> {
-  equipment: EquipmentWithPorts;
+// ✅ Interface pour les données du node (doit étendre Record<string, unknown>)
+export interface EquipmentNodeData extends Record<string, unknown> {
+  equipment: Equipment & { ports?: Port[] };
   onPortClick?: (portId: string) => void;
 }
 
-// ✅ Type complet du node (pas juste NodeProps)
-export type EquipmentNodeType = Node<EquipmentNodeData>;
+export type EquipmentNodeType = Node<EquipmentNodeData, 'equipment'>;
 
-// ✅ Utiliser le type 'data' directement avec assertion ou extraction
-const EquipmentNode = memo(({ data }: NodeProps<EquipmentNodeData>) => {
-  // ✅ TypeScript comprend maintenant que data est de type EquipmentNodeData
-  const { equipment, onPortClick } = data as EquipmentNodeData;
-  const networkColor = getNetworkColor(equipment.networkType);
-  const statusColor = getStatusColor(equipment.status);
+// ✅ Composant avec le bon type NodeProps
+const EquipmentNode = memo(({ data }: NodeProps<EquipmentNodeType>) => {
+    const { equipment, onPortClick } = data;
+    const networkColor = getNetworkColor(equipment.networkType);
+    const statusColor = getStatusColor(equipment.status);
 
   return (
     <div 
@@ -122,7 +115,7 @@ const EquipmentNode = memo(({ data }: NodeProps<EquipmentNodeData>) => {
           </div>
         </div>
 
-        {/* Ports - Vérifier que ports existe */}
+        {/* Ports */}
         {equipment.ports && equipment.ports.length > 0 && (
           <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
             <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">

@@ -7,8 +7,8 @@ import {
   Edge
 } from '@xyflow/react';
 
-// ✅ Interface qui étend Edge correctement
-export interface ConnectionEdgeData extends Edge {
+// ✅ Interface qui étend Record<string, unknown>
+export interface ConnectionEdgeData extends Record<string, unknown> {
   sourcePort?: {
     id: string;
     number: number;
@@ -19,6 +19,9 @@ export interface ConnectionEdgeData extends Edge {
   label?: string;
 }
 
+type ConnectionEdgeType = Edge<ConnectionEdgeData, 'connection'>;
+
+// ✅ Composant avec les bons types
 const ConnectionEdge = memo(({
   id,
   sourceX,
@@ -30,7 +33,7 @@ const ConnectionEdge = memo(({
   style = {},
   data,
   markerEnd,
-}: EdgeProps<ConnectionEdgeData>) => {
+}: EdgeProps<ConnectionEdgeType>) => {
   const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
@@ -40,9 +43,11 @@ const ConnectionEdge = memo(({
     targetPosition,
   });
 
-  // ✅ Vérifier que data existe avant d'accéder aux propriétés
-  const isActive = data?.sourcePort?.status === 'UP';
-  const portType = data?.sourcePort?.type || 'ETHERNET';
+  // ✅ Accès sécurisé aux propriétés
+  const sourcePort = data?.sourcePort;
+  const isActive = sourcePort?.status === 'UP';
+  const portType = sourcePort?.type || 'ETHERNET';
+  const label = data?.label;
 
   // Couleur selon le type et statut
   const getEdgeColor = () => {
@@ -76,7 +81,7 @@ const ConnectionEdge = memo(({
       />
 
       {/* Label */}
-      {data?.label && (
+      {label && (
         <EdgeLabelRenderer>
           <div
             style={{
@@ -87,7 +92,7 @@ const ConnectionEdge = memo(({
             className="nodrag nopan"
           >
             <div className="px-2 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-md text-xs font-medium text-gray-900 dark:text-white">
-              {data.label}
+              {label}
             </div>
           </div>
         </EdgeLabelRenderer>
