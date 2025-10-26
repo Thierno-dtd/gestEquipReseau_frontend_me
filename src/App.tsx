@@ -42,46 +42,107 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Suspense fallback={<Loading fullScreen text="Chargement..." />}>
-          <Routes>
-            {/* Route publique */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+        <Routes>
+          {/* Route publique */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-            {/* Routes protégées - UNE SEULE VÉRIFICATION */}
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Suspense fallback={<Loading fullScreen text="Chargement..." />}>
-                      <Routes>
-                        {/* Dashboard */}
-                        <Route index element={<DashboardPage />} />
+          {/* Routes protégées */}
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Suspense fallback={<Loading fullScreen text="Chargement..." />}>
+                    <Routes>
+                      {/* Dashboard */}
+                      <Route path="/" element={<DashboardPage />} />
 
-                        {/* Infrastructure */}
-                        <Route path="sites" element={<SiteListPage />} />
-                        <Route path="zones/:zoneId" element={<ZoneDetailPage />} />
-                        <Route path="racks/:rackId" element={<RackDetailPage />} />
-                        <Route path="equipments/:equipmentId" element={<EquipmentDetailPage />} />
-                        <Route path="ports/:portId" element={<PortDetailPage />} />
+                      {/* Infrastructure */}
+                      <Route 
+                        path="/sites" 
+                        element={
+                          <ProtectedRoute requiredPermission={Permission.VIEW_INFRASTRUCTURE}>
+                            <SiteListPage />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/zones/:zoneId" 
+                        element={
+                          <ProtectedRoute requiredPermission={Permission.VIEW_INFRASTRUCTURE}>
+                            <ZoneDetailPage />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/racks/:rackId" 
+                        element={
+                          <ProtectedRoute requiredPermission={Permission.VIEW_INFRASTRUCTURE}>
+                            <RackDetailPage />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/equipments/:equipmentId" 
+                        element={
+                          <ProtectedRoute requiredPermission={Permission.VIEW_INFRASTRUCTURE}>
+                            <EquipmentDetailPage />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/ports/:portId" 
+                        element={
+                          <ProtectedRoute requiredPermission={Permission.VIEW_INFRASTRUCTURE}>
+                            <PortDetailPage />
+                          </ProtectedRoute>
+                        } 
+                      />
 
-                        {/* Modifications */}
-                        <Route path="modifications" element={<ProposedChangesPage />} />
-                        <Route path="modifications/:modificationId" element={<ChangeDetailModal />} />
-                        <Route path="modifications/dashboard" element={<ValidationDashboard />} />
-                        <Route path="modifications/history" element={<ChangeHistory />} />
+                      {/* Modifications */}
+                      <Route 
+                        path="/modifications" 
+                        element={
+                          <ProtectedRoute requiredPermission={Permission.PROPOSE_MODIFICATION}>
+                            <ProposedChangesPage />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/modifications/:modificationId" 
+                        element={
+                          <ProtectedRoute requiredPermission={Permission.VALIDATE_MODIFICATION}>
+                            <ChangeDetailModal />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/modifications/dashboard" 
+                        element={
+                          <ProtectedRoute requiredPermission={Permission.VALIDATE_MODIFICATION}>
+                            <ValidationDashboard />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/modifications/history" 
+                        element={
+                          <ProtectedRoute requiredPermission={Permission.VIEW_INFRASTRUCTURE}>
+                            <ChangeHistory />
+                          </ProtectedRoute>
+                        } 
+                      />
 
-                        {/* 404 */}
-                        <Route path="*" element={<Navigate to="/" replace />} />
-                      </Routes>
-                    </Suspense>
-                  </AppLayout>
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </Suspense>
+                      {/* 404 */}
+                      <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                  </Suspense>
+                </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
 
         {/* Toast notifications */}
         <Toaster 

@@ -15,12 +15,12 @@ const LoginPage = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="min-h-screen bg-background-dark text-text-dark-primary font-display flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-[#101c22] text-white flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <header className="text-center mb-10">
-          <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-xl mb-4">
-            <Network className="text-primary" size={48} />
+          <div className="inline-flex items-center justify-center p-4 bg-[#1193d4]/10 rounded-xl mb-4">
+            <Network className="text-[#1193d4]" size={48} />
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">InfraMap</h1>
           <p className="text-gray-400">
@@ -29,7 +29,7 @@ const LoginPage = () => {
         </header>
 
         {/* Formulaire de connexion */}
-        <main className="bg-surface-dark rounded-xl shadow-2xl p-8">
+        <main className="bg-[#1a2831] rounded-xl shadow-2xl p-8">
           <LoginForm />
         </main>
 
