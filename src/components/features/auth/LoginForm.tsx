@@ -50,12 +50,12 @@ const LoginForm = () => {
           E-mail
         </label>
         <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-dark-secondary" />
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-dark-secondary " />
           <input
             id="email"
             type="email"
             {...register('email')}
-            className="w-full bg-surface-dark border-none rounded-lg pl-10 pr-4 py-3 focus:ring-2 focus:ring-primary text-text-dark-primary placeholder:text-text-dark-secondary/70"
+            className="w-full bg-[#101c22] border-none rounded-lg pl-10 pr-4 py-3 focus:ring-2 focus:ring-primary text-text-dark-primary placeholder:text-text-dark-secondary/70"
             placeholder="votre.email@entreprise.com"
             disabled={isLoading}
           />
@@ -79,7 +79,7 @@ const LoginForm = () => {
             id="password"
             type="password"
             {...register('password')}
-            className="w-full bg-surface-dark border-none rounded-lg pl-10 pr-4 py-3 focus:ring-2 focus:ring-primary text-text-dark-primary placeholder:text-text-dark-secondary/70"
+            className="w-full bg-[#101c22] border-none rounded-lg pl-10 pr-4 py-3 focus:ring-2 focus:ring-primary text-text-dark-primary placeholder:text-text-dark-secondary/70"
             placeholder="••••••••"
             disabled={isLoading}
           />
@@ -93,7 +93,7 @@ const LoginForm = () => {
       <div className="text-right">
         <a 
           href="/forgot-password" 
-          className="text-sm text-primary hover:underline"
+          className="text-[#1193d4] text-sm text-primary hover:underline"
         >
           Mot de passe oublié ?
         </a>
@@ -104,7 +104,7 @@ const LoginForm = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-primary text-white font-bold py-4 px-4 rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-primary transition-colors duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full btn-primary font-bold py-4 px-4 rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-primary transition-colors duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? (
             <>
