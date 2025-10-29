@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { infrastructureAPI } from '@services/api/infrastructure';
+import { infrastructureAPI } from '@services/api';
 import { X, Cable, Activity, Info, Link as LinkIcon } from 'lucide-react';
 import Loading from '@components/shared/Common/Loading';
 

@@ -18,7 +18,8 @@
       "@store/*": ["store/*"],
       "@models/*": ["models/*"],
       "@utils/*": ["utils/*"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@mockTest/*": ["mockTest/*"]
     },
 
     /* Règles de qualité */

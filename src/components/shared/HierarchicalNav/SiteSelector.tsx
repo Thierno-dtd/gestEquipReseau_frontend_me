@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { infrastructureAPI } from '@services/api/infrastructure';
+import { infrastructureAPI } from '@services/api';
 import { Building2, ChevronDown, Search, MapPin, Check } from 'lucide-react';
 import { Site } from '@models/infrastructure';
 import Loading from '@components/shared/Common/Loading';

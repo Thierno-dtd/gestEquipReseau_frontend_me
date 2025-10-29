@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { modificationsAPI } from '@services/api/modifications';
+import { modificationsAPI } from '@services/api';
 import { useModifications } from '@hooks/useModifications';
 import { 
   X, 

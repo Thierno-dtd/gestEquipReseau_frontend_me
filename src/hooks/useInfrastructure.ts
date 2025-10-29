@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { infrastructureAPI } from '@/services/api/infrastructure';
+import { infrastructureAPI } from '@/services/api';
 import { useInfrastructureStore } from '@/store/infrastructureStore';
 
 export const useInfrastructure = () => {

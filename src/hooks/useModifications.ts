@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { modificationsAPI } from '@services/api/modifications';
+import { modificationsAPI } from '@services/api';
 import { ModificationProposal } from '@models/modifications';
 import { toast } from 'sonner';
 import { useNetworkStatus } from './useNetworkStatus';

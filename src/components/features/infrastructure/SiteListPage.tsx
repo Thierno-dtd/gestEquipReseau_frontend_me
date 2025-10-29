@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { infrastructureAPI } from '@services/api/infrastructure';
+import { infrastructureAPI } from '@services/api';
 import { useNavigate } from 'react-router-dom';
 import { Building2, Plus, Search } from 'lucide-react';
 import Loading from '@components/shared/Common/Loading';
@@ -24,7 +24,7 @@ const SiteListPage = () => {
     );
   }
 
-  const sites = data?.data || [];
+  const sites = data?.data.Site || [];
 
   return (
     <div className="space-y-6">

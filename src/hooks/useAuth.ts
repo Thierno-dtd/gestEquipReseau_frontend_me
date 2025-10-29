@@ -1,6 +1,6 @@
 import { useAuthStore } from '@store/authStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { authAPI } from '@services/api/auth';
+import { authAPI } from '@services/api';
 import { LoginCredentials } from '@models/auth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';

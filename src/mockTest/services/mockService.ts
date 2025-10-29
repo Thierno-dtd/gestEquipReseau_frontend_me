@@ -18,13 +18,13 @@ import {
     timestamp: new Date().toISOString(),
   });
   
-  const createPaginatedResponse = <T>(data: T[]): PaginatedResponse<T> => ({
-    data,
+  const createPaginatedResponse = <T>(items: T[], label: string): any => ({
+    [label]: items,
     pagination: {
       page: 1,
-      pageSize: data.length,
+      pageSize: items.length,
       totalPages: 1,
-      totalItems: data.length,
+      totalItems: items.length,
       hasNext: false,
       hasPrevious: false,
     },
@@ -35,7 +35,7 @@ import {
     // Sites
     getSites: async () => {
       await delay(500);
-      return createResponse(createPaginatedResponse(mockSites));
+      return createResponse(createPaginatedResponse(mockSites,"Site"));
     },
   
     getSiteById: async (id: string) => {
@@ -51,7 +51,7 @@ import {
       const zones = siteId 
         ? mockZones.filter(z => z.siteId === siteId)
         : mockZones;
-      return createResponse(createPaginatedResponse(zones));
+      return createResponse(createPaginatedResponse(zones,"Zone"));
     },
   
     getZoneById: async (id: string) => {
@@ -67,7 +67,7 @@ import {
       const racks = zoneId 
         ? mockRacks.filter(r => r.zoneId === zoneId)
         : mockRacks;
-      return createResponse(createPaginatedResponse(racks));
+      return createResponse(createPaginatedResponse(racks,"Rack"));
     },
   
     getRackById: async (id: string) => {
@@ -91,7 +91,7 @@ import {
       const equipments = rackId 
         ? mockEquipments.filter(e => e.rackId === rackId)
         : mockEquipments;
-      return createResponse(createPaginatedResponse(equipments));
+      return createResponse(createPaginatedResponse(equipments,"Equipment"));
     },
   
     getEquipmentById: async (id: string) => {
@@ -119,7 +119,7 @@ import {
       const ports = equipmentId 
         ? mockPorts.filter(p => p.equipmentId === equipmentId)
         : mockPorts;
-      return createResponse(createPaginatedResponse(ports));
+      return createResponse(createPaginatedResponse(ports,"Port"));
     },
   
     getPortById: async (id: string) => {
@@ -146,7 +146,7 @@ import {
     // Connections
     getConnections: async () => {
       await delay(500);
-      return createResponse(createPaginatedResponse(mockConnections));
+      return createResponse(createPaginatedResponse(mockConnections,"Connection"));
     },
   };
   
@@ -183,13 +183,13 @@ import {
   export const mockModificationsAPI = {
     getModifications: async () => {
       await delay(500);
-      return createResponse(createPaginatedResponse(mockModifications));
+      return createResponse(createPaginatedResponse(mockModifications,"Modifications"));
     },
   
     getPendingModifications: async () => {
       await delay(500);
       const pending = mockModifications.filter(m => m.status === 'PENDING');
-      return createResponse(createPaginatedResponse(pending));
+      return createResponse(createPaginatedResponse(pending,"Pending"));
     },
   
     getStats: async () => {

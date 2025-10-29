@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { infrastructureAPI } from '@services/api/infrastructure';
+import { infrastructureAPI } from '@services/api';
 import { 
   Building2, 
   Plus, 

@@ -64,7 +64,8 @@ export default defineConfig({
       '@store': path.resolve(__dirname, './src/store'),
       '@models': path.resolve(__dirname, './src/models'),
       '@utils': path.resolve(__dirname, './src/utils'),
-      '@styles': path.resolve(__dirname, './src/styles')
+      '@styles': path.resolve(__dirname, './src/styles'),
+      '@mockTest': path.resolve(__dirname, './src/mockTest'),
     }
   },
   server: {

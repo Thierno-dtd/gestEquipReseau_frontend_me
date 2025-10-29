@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { modificationsAPI } from '@services/api/modifications';
+import { modificationsAPI } from '@services/api';
 import { Search, Filter, Calendar, User, FileText, ChevronDown } from 'lucide-react';
 import Loading from '@components/shared/Common/Loading';
 import Badge from '@components/shared/Common/Badge';

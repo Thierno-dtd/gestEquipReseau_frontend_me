@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { infrastructureAPI } from '@services/api/infrastructure';
+import { infrastructureAPI } from '@services/api';
 import { Building2, Server, Cable, Activity } from 'lucide-react';
 import Loading from '@components/shared/Common/Loading';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,8 @@ const DashboardPage = () => {
     queryFn: () => infrastructureAPI.getSites(),
   });
 
-  const sites = data?.data || [];
+  const sites = data?.data.Site || [];
+  console.log(sites);
 
   // Calculer les statistiques
   const stats = {

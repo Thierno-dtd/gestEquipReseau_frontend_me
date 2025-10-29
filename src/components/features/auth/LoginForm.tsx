@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Mail, Lock, LogIn } from 'lucide-react';
 import { useAuthStore } from '@store/authStore';
-import { authAPI } from '@services/api/auth';
+import { authAPI } from '@services/api';
 import { loginSchema, LoginFormData } from '@utils/validators';
 import { toast } from 'sonner';
 

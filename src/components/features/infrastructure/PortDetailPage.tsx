@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { infrastructureAPI } from '@services/api/infrastructure';
+import { infrastructureAPI } from '@services/api';
 import { ArrowLeft, Cable, Activity, Edit, Link as LinkIcon } from 'lucide-react';
 import Loading from '@components/shared/Common/Loading';
 import { PortStatus } from '@models/infrastructure';

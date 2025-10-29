@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { infrastructureAPI } from '@services/api/infrastructure';
+import { infrastructureAPI } from '@services/api';
 import { ArrowLeft, Plus, QrCode, Thermometer, Zap, Package } from 'lucide-react';
 import Loading from '@components/shared/Common/Loading';
 import Badge from '@components/shared/Common/Badge';

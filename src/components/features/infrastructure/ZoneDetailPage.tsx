@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { infrastructureAPI } from '@services/api/infrastructure';
+import { infrastructureAPI } from '@services/api';
 import { ArrowLeft, Plus, Search, Grid3X3, List, MapPin } from 'lucide-react';
 import Loading from '@components/shared/Common/Loading';
 import Badge from '@components/shared/Common/Badge';
@@ -28,7 +28,7 @@ const ZoneDetailPage = () => {
   });
 
   const isLoading = zoneLoading || racksLoading;
-  const racks = racksData?.data || [];
+  const racks = racksData?.data.Rack || [];
 
   // Filtrer les racks selon la recherche
   const filteredRacks = racks.filter(rack =>

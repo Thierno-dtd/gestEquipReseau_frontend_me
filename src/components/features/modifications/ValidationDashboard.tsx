@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { modificationsAPI } from '@services/api/modifications';
+import { modificationsAPI } from '@services/api';
 import { 
   Clock, 
   CheckCircle, 

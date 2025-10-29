@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { notificationsAPI } from '@/services/api/notifications';
+import { notificationsAPI } from '@/services/api';
 import { useNotificationStore } from '@/store/notificationStore';
 import { toast } from 'sonner';
 
