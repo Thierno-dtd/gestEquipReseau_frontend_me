@@ -5,7 +5,6 @@ import {
   Database, 
   Shield, 
   Mail,
-  Wifi,
   Download,
   Upload,
   Trash2,

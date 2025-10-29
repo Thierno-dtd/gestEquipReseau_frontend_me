@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Search, Plus, UserPlus, Edit, Trash2, Shield, Mail } from 'lucide-react';
+import { Search, UserPlus, Edit, Trash2, Shield, Mail } from 'lucide-react';
 import Loading from '@components/shared/Common/Loading';
-import Badge from '@components/shared/Common/Badge';
 import { UserRole } from '@models/auth';
 import { getRoleLabel } from '@utils/permissions';
 

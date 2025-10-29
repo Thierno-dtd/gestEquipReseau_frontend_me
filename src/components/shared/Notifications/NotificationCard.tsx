@@ -1,7 +1,6 @@
 import { Notification, NotificationPriority, NotificationType } from '@models/notifications';
 import { formatRelativeTime } from '@utils/formatters';
 import { 
-  Bell, 
   CheckCircle, 
   AlertCircle, 
   Info, 

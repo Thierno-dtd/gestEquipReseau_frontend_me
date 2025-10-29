@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { modificationsAPI } from '@services/api/modifications';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Clock, ChevronRight } from 'lucide-react';
+import { ShieldCheck, ChevronRight } from 'lucide-react';
 
 const ValidationQueue = () => {
   const navigate = useNavigate();

@@ -36,6 +36,7 @@ export enum UserRole {
     email: string;
     firstName: string;
     lastName: string;
+    password?: string
     role: UserRole;
     permissions: Permission[];
     company?: string; // Pour les prestataires

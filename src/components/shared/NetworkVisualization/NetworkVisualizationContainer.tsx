@@ -4,9 +4,7 @@ import { infrastructureAPI } from '@services/api/infrastructure';
 import { Equipment } from '@models/infrastructure';
 import RackDiagram from './RackDiagram';
 import Loading from '@components/shared/Common/Loading';
-import { 
-  ZoomIn, 
-  ZoomOut, 
+import {  
   Maximize2, 
   Download,
   Settings,

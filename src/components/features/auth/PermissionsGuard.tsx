@@ -22,7 +22,7 @@ export const PermissionsGuard = ({
 }: PermissionsGuardProps) => {
   const location = useLocation();
   const { isAuthenticated, isLoading } = useAuth();
-  const { hasPermission, hasRole, hasAnyPermission, hasAllPermissions, hasAnyRole } = usePermissions();
+  const { hasAnyPermission, hasAllPermissions, hasAnyRole } = usePermissions();
 
   if (isLoading) {
     return <Loading />;

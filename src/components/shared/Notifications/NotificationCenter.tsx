@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNotificationStore } from '@store/notificationStore';
-import { NotificationStatus, NotificationType, NotificationPriority } from '@models/notifications';
+import { NotificationStatus, NotificationType } from '@models/notifications';
 import NotificationCard from './NotificationCard';
 import ValidationQueue from './ValidationQueue';
 import SyncStatus from './SyncStatus';

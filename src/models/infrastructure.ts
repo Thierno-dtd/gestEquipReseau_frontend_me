@@ -23,6 +23,11 @@ export enum PortType {
   USB = 'USB',
 }
 
+export enum DuplexType {
+  FULL = 'FULL',
+  AUTO = 'AUTO',
+}
+
 // Statut de port
 export enum PortStatus {
   UP = 'UP',
@@ -106,6 +111,7 @@ export interface Port {
   type: PortType;
   status: PortStatus;
   speed?: string; // '1Gbps', '10Gbps', etc.
+  duplex?: DuplexType;
   vlan?: string;
   description?: string;
   connectedTo?: string; // ID du port connecté
@@ -154,10 +160,52 @@ export interface Connection {
   updatedAt: string;
 }
 
+export interface MaintenanceRecord {
+  id: string;
+  date: string; // ISO date
+  type: 'Préventive' | 'Corrective' | 'Upgrade' | 'Inspection';
+  technician: string; // Nom du technicien
+  technicianId?: string; // ID de l'utilisateur (optionnel)
+  description: string;
+  duration: number; // En minutes
+  status?: 'Planifiée' | 'En cours' | 'Terminée' | 'Annulée';
+  cost?: number;
+  parts?: string[]; // Pièces remplacées
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Document {
+  id: string;
+  name: string;
+  type: 'PDF' | 'IMAGE' | 'EXCEL' | 'WORD' | 'OTHER';
+  url: string;
+  size?: number; // En bytes
+  uploadedBy?: string;
+  uploadedAt: string;
+}
+
 // Vue détaillée avec relations
 export interface RackDetail extends Rack {
+  /*manufacturer?: string;
+  model?: string;
+  serialNumber?: string;
+  documents?: Document[];
+  maintenanceHistory?: MaintenanceRecord[];
+  humidity?: number;
+  pduCount: number;
+  pduModel: string;
+  coolingType: 'PASSIVE' | 'ACTIVE';
+  accessControl: string;
+  notes: string;
+  tags : string[]*/
   zone: Zone;
   equipments: Equipment[];
+  /*installationDate?: string;
+  lastMaintenanceDate?: string;
+  nextMaintenanceDate?: string;
+  warrantyEndDate?: string;*/
 }
 
 export interface EquipmentDetail extends Equipment {
