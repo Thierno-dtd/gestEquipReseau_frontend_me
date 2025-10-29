@@ -151,13 +151,18 @@ import {
   };
   
   export const mockAuthAPI = {
-    login: async (credentials: any) => {
+    login: async (credentials: { email: string; password: string }) => {
       await delay(800);
-      const user = mockUsers.find(u => u.email === credentials.email);
+      const user = mockUsers.find(
+          u => u.email === credentials.email && u.password === credentials.password
+      );
       if (!user) throw new Error('Invalid credentials');
-      
+
+      // Retirer le mot de passe avant de renvoyer l'utilisateur
+      const { password, ...userWithoutPassword } = user;
+
       return createResponse({
-        user,
+        user: userWithoutPassword,
         token: 'mock_token_' + Date.now(),
         refreshToken: 'mock_refresh_' + Date.now(),
         expiresIn: 3600,
