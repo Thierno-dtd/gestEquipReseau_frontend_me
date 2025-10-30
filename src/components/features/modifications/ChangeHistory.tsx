@@ -18,7 +18,7 @@ const ChangeHistory = () => {
     queryFn: () => modificationsAPI.getModifications(),
   });
 
-  const modifications = modificationsData?.data || [];
+  const modifications = modificationsData?.data.Modification || [];
 
   // Filtrer
   const filteredModifications = modifications.filter(mod => {
@@ -100,7 +100,7 @@ const ChangeHistory = () => {
         <div className="space-y-6">
           {/* Grouper par date */}
           {Object.entries(
-            filteredModifications.reduce((groups, mod) => {
+            filteredModifications.reduce((groups: any, mod: any) => {
               const date = new Date(mod.proposedAt).toLocaleDateString('fr-FR', {
                 year: 'numeric',
                 month: 'long',
@@ -127,7 +127,7 @@ const ChangeHistory = () => {
                 {/* Timeline Line */}
                 <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700" />
 
-                {mods.map((modification, index) => {
+                {mods.map((modification:any , index: any) => {
                   const isExpanded = expandedId === modification.id;
 
                   return (

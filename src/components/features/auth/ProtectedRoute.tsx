@@ -15,7 +15,8 @@ const ProtectedRoute = ({ children, requiredPermission }: ProtectedRouteProps) =
   }
 
   if (requiredPermission && !hasPermission(requiredPermission)) {
-    return <Navigate to="/" replace />;
+    console.log(hasPermission(requiredPermission));
+    return <Navigate to="/unauthorized" replace />;
   }
 
   return <>{children}</>;

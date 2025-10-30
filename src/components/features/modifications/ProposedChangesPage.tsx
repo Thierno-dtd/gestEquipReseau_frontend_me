@@ -21,7 +21,7 @@ const ProposedChangesPage = () => {
     ),
   });
 
-  const modifications = modificationsData?.data || [];
+  const modifications = modificationsData?.data.Modification || [];
 
   // Filtrer par recherche
   const filteredModifications = modifications.filter(mod =>

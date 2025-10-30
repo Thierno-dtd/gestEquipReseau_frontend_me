@@ -12,7 +12,7 @@ const ValidationQueue = () => {
     refetchInterval: 30000, // Refresh every 30s
   });
 
-  const pendingCount = pendingData?.data?.length || 0;
+  const pendingCount = pendingData?.data?.Pending.length || 0;
 
   if (isLoading || pendingCount === 0) {
     return null;

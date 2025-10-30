@@ -24,7 +24,7 @@ const HierarchyManagerPage = () => {
     queryFn: () => infrastructureAPI.getSites(),
   });
 
-  const sites = sitesData?.data || [];
+  const sites = sitesData?.data.Site || [];
 
   const toggleSite = (siteId: string) => {
     const newExpanded = new Set(expandedSites);

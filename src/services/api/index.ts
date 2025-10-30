@@ -4,7 +4,6 @@ import * as realInfrastructureAPI from './infrastructure';
 import * as realModificationsAPI from './modifications';
 
 const USE_MOCK= import.meta.env.VITE_USE_MOCK === 'true';
-console.log(import.meta.env.USE_MOCK);
 
 // ✅ Basculer automatiquement entre mock et real
 export const authAPI = USE_MOCK ? mockAuthAPI : realAuthAPI.authAPI;

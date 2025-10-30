@@ -13,7 +13,6 @@ const DashboardPage = () => {
   });
 
   const sites = data?.data.Site || [];
-  console.log(sites);
 
   // Calculer les statistiques
   const stats = {

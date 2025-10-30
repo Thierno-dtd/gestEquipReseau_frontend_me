@@ -29,7 +29,7 @@ const RackDetailPage = () => {
     );
   }
 
-  const { zone, equipments } = rackDetail;
+  const { zone, equipments } = rackDetail.data;
   const usagePercent = (rackDetail.usedHeight / rackDetail.height) * 100;
 
   return (

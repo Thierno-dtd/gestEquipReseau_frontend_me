@@ -28,7 +28,7 @@ const PortDetailPage = () => {
     );
   }
 
-  const { equipment, connection, connectedPort } = portDetail;
+  const { equipment, connection, connectedPort } = portDetail.data;
 
   const getStatusColor = (status: PortStatus) => {
     switch (status) {

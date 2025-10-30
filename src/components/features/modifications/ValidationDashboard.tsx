@@ -27,7 +27,7 @@ const ValidationDashboard = () => {
   });
 
   const isLoading = statsLoading || pendingLoading;
-  const pendingModifications = pendingData?.data || [];
+  const pendingModifications = pendingData?.data.Pending || [];
 
   if (isLoading) {
     return <Loading fullScreen text="Chargement du tableau de bord..." />;

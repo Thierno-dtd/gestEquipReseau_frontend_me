@@ -27,7 +27,8 @@ const LoginForm = () => {
 
     try {
       const response = await authAPI.login(data);
-      login(response.user, response.token, response.refreshToken);
+      //console.log(JSON.stringify(response, null, 2));
+      login(response.data.user, response.data.token, response.data.refreshToken);
       toast.success('Connexion réussie !');
       navigate('/');
     } catch (error: any) {

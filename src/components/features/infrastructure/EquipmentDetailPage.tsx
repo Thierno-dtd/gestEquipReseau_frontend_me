@@ -38,7 +38,8 @@ const EquipmentDetailPage = () => {
     );
   }
 
-  const { rack, ports, connections } = equipmentDetail;
+  const { rack, ports, connections } = equipmentDetail.data;
+  console.log(JSON.stringify(rack));
 
   return (
     <div className="space-y-6">
