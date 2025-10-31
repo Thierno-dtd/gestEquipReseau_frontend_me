@@ -16,16 +16,26 @@ const DashboardPage = lazy(() => import('@components/features/dashboard/Dashboar
 
 // Infrastructure
 const SiteListPage = lazy(() => import('@components/features/infrastructure/SiteListPage'));
+const SiteDetailPage = lazy(() => import('@components/features/infrastructure/SiteDetailPage'));
 const ZoneDetailPage = lazy(() => import('@components/features/infrastructure/ZoneDetailPage'));
 const RackDetailPage = lazy(() => import('@components/features/infrastructure/RackDetailPage'));
 const EquipmentDetailPage = lazy(() => import('@components/features/infrastructure/EquipmentDetailPage'));
 const PortDetailPage = lazy(() => import('@components/features/infrastructure/PortDetailPage'));
+
+//Scan
+const QRScannerPage = lazy(() => import('@components/features/qr-scanner/QRScannerPage'));
 
 // Modifications
 const ProposedChangesPage = lazy(() => import('@components/features/modifications/ProposedChangesPage'));
 const ChangeDetailModal = lazy(() => import('@components/features/modifications/ChangeDetailModal'));
 const ValidationDashboard = lazy(() => import('@components/features/modifications/ValidationDashboard'));
 const ChangeHistory = lazy(() => import('@components/features/modifications/ChangeHistory'));
+
+
+// Admin
+const UserManagementPage = lazy(() => import('@components/features/admin/UserManagementPage'));
+const SystemSettingsPage = lazy(() => import('@components/features/admin/SystemSettingsPage'));
+const HierarchyManagerPage = lazy(() => import('@components/features/admin/HierarchyManagerPage'));
 
 // Configuration React Query
 const queryClient = new QueryClient({
@@ -67,6 +77,15 @@ function App() {
                           </ProtectedRoute>
                         } 
                       />
+                        <Route
+                            path="/sites/:siteId"
+                            element={
+                                <ProtectedRoute requiredPermission={Permission.VIEW_INFRASTRUCTURE}>
+                                    <SiteDetailPage />
+                                </ProtectedRoute>
+                            }
+                        />
+
                       <Route 
                         path="/zones/:zoneId" 
                         element={
@@ -99,6 +118,16 @@ function App() {
                           </ProtectedRoute>
                         } 
                       />
+
+                        {/* QR Scanner */}
+                        <Route
+                            path="/scan"
+                            element={
+                                <ProtectedRoute requiredPermission={Permission.SCAN_QR}>
+                                    <QRScannerPage />
+                                </ProtectedRoute>
+                            }
+                        />
 
                       {/* Modifications */}
                       <Route 
@@ -133,6 +162,39 @@ function App() {
                           </ProtectedRoute>
                         } 
                       />
+
+                        <Route
+                            path="/history"
+                            element={
+                                <ProtectedRoute requiredPermission={Permission.VIEW_INFRASTRUCTURE}>
+                                    <ChangeHistory />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        {/* Administration */}
+                        <Route
+                            path="/users"
+                            element={
+                                <ProtectedRoute requiredPermission={Permission.MANAGE_USERS}>
+                                    <UserManagementPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/settings"
+                            element={
+                                <SystemSettingsPage />
+                            }
+                        />
+                        <Route
+                            path="/hierarchy"
+                            element={
+                                <ProtectedRoute requiredPermission={Permission.EDIT_INFRASTRUCTURE}>
+                                    <HierarchyManagerPage />
+                                </ProtectedRoute>
+                            }
+                        />
 
                       {/* 404 */}
                       <Route path="*" element={<Navigate to="/" replace />} />

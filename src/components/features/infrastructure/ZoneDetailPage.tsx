@@ -14,11 +14,13 @@ const ZoneDetailPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   // Récupérer les détails de la zone
-  const { data: zone, isLoading: zoneLoading } = useQuery({
-    queryKey: ['zone', zoneId],
+  const { data: zonesData, isLoading: zoneLoading } = useQuery({
+    queryKey: ['zones', zoneId],
     queryFn: () => infrastructureAPI.getZoneById(zoneId!),
     enabled: !!zoneId,
   });
+
+  const zone = zonesData?.data;
 
   // Récupérer les racks de la zone
   const { data: racksData, isLoading: racksLoading } = useQuery({

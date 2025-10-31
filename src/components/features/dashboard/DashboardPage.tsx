@@ -3,6 +3,7 @@ import { infrastructureAPI } from '@services/api';
 import { Building2, Server, Cable, Activity } from 'lucide-react';
 import Loading from '@components/shared/Common/Loading';
 import { useNavigate } from 'react-router-dom';
+import {Site} from "@/models";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const DashboardPage = () => {
     queryFn: () => infrastructureAPI.getSites(),
   });
 
-  const sites = data?.data.Site || [];
+  const sites: Site[] = data?.data.Site || [];
 
   // Calculer les statistiques
   const stats = {
